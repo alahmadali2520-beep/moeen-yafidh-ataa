@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دعوة إلكترونية</title>
+<title>معين يفيض عطاء</title>
 
 <style>
 @font-face {
@@ -91,8 +91,9 @@ img.onload = function() {
 
 document.getElementById("nameInput").addEventListener("input", draw);
 
+// 🧠 تصغير الخط تلقائي
 function fitText(text, maxWidth) {
-    let size = 70;
+    let size = 80;
     do {
         ctx.font = size + "px Noor";
         size--;
@@ -107,17 +108,28 @@ function draw() {
     const name = document.getElementById("nameInput").value;
     if (!name) return;
 
-    const x = canvas.width / 2;
-    const y = canvas.height * 0.55; // مكان المستطيل
+    // 📦 منطقة المستطيل (تقدر تعدلها لو احتجت)
+    const box = {
+        x: canvas.width * 0.18,
+        y: canvas.height * 0.63,
+        width: canvas.width * 0.64,
+        height: canvas.height * 0.10
+    };
 
-    const fontSize = fitText(name, canvas.width * 0.7);
+    const fontSize = fitText(name, box.width * 0.9);
 
+    // 🎨 إعداد النص
     ctx.fillStyle = "#9e9157";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.font = fontSize + "px Noor";
 
-    ctx.fillText(name, x, y);
+    // 🎯 تمركز داخل المستطيل
+    const textX = box.x + box.width / 2;
+    const textY = box.y + box.height / 2;
+
+    // ✍️ رسم النص
+    ctx.fillText(name, textX, textY);
 }
 
 function downloadImage() {
