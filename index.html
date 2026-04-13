@@ -1,159 +1,144 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>معين يفيض عطاء</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>معين يفيض عطاء</title>
 
-<style>
-@font-face {
-    font-family: 'Noor';
-    src: url('Noor.ttf');
-}
+  <style>
+    @font-face {
+      font-family: 'Noor';
+      src: url('Noor.ttf');
+    }
 
-body {
-    margin: 0;
-    font-family: 'Noor', sans-serif;
-    background: #0b0b0b;
-    text-align: center;
-}
+    body {
+      margin: 0;
+      font-family: 'Noor', sans-serif;
+      background: #0b0b0b;
+      text-align: center;
+    }
 
-.container {
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-}
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
 
-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: none;
-    margin: 10px 0;
-    text-align: center;
-}
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px 0;
+      text-align: center;
+      box-sizing: border-box;
+    }
 
-button {
-    padding: 12px 20px;
-    margin: 10px;
-    font-size: 15px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-}
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 15px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
 
-.download {
-    background: #9e9157;
-    color: #fff;
-}
+    .download {
+      background: #9e9157;
+      color: #fff;
+    }
 
-.clear {
-    background: #333;
-    color: #fff;
-}
+    .clear {
+      background: #333;
+      color: #fff;
+    }
 
-canvas {
-    width: 100%;
-    margin-top: 15px;
-    border-radius: 12px;
-}
-</style>
+    canvas {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 12px;
+      display: block;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
-
+  <div class="container">
     <input type="text" id="nameInput" placeholder="اكتب اسمك هنا">
 
     <div>
-        <button class="clear" onclick="clearName()">مسح</button>
-        <button class="download" onclick="downloadImage()">تحميل الصورة</button>
+      <button class="clear" onclick="clearName()">مسح</button>
+      <button class="download" onclick="downloadImage()">تحميل الصورة</button>
     </div>
 
     <canvas id="canvas"></canvas>
+  </div>
 
-</div>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-<script>
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = "invite.jpg";
 
-const img = new Image();
-img.src = "invite.jpg";
+    img.onload = function () {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      draw();
+    };
 
-img.onload = function() {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    draw();
-};
+    document.getElementById("nameInput").addEventListener("input", draw);
 
-document.getElementById("nameInput").addEventListener("input", draw);
-
-// 🧠 تصغير الخط تلقائي
-function fitText(text, maxWidth) {
-    let size = 80;
-    do {
+    function fitText(text, maxWidth) {
+      let size = 80;
+      do {
         ctx.font = size + "px Noor";
         size--;
-    } while (ctx.measureText(text).width > maxWidth && size > 20);
-    return size;
-}
+      } while (ctx.measureText(text).width > maxWidth && size > 20);
+      return size;
+    }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0);
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
 
-    const name = document.getElementById("nameInput").value;
-    if (!name) return;
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) return;
 
-// 📦 منطقة المستطيل
-const box = {
-    x: canvas.width * 0.18,
-    y: canvas.height * 0.63,
-    width: canvas.width * 0.64,
-    height: canvas.height * 0.10
-};
+      /* هذا هو مكان المستطيل */
+      const box = {
+        x: canvas.width * 0.18,
+        y: canvas.height * 0.63,
+        width: canvas.width * 0.64,
+        height: canvas.height * 0.10
+      };
 
-// 🧠 تصغير الخط تلقائي
-function fitText(text, maxWidth) {
-    let size = 80;
-    do {
-        ctx.font = size + "px Noor";
-        size--;
-    } while (ctx.measureText(text).width > maxWidth && size > 20);
-    return size;
-}
+      const fontSize = fitText(name, box.width * 0.9);
 
-const fontSize = fitText(name, box.width * 0.9);
+      ctx.fillStyle = "#9e9157";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = fontSize + "px Noor";
 
-// 🎨 إعداد النص
-ctx.fillStyle = "#9e9157";
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.font = fontSize + "px Noor";
+      const textX = box.x + box.width / 2;
+      const textY = box.y + box.height / 2;
 
-// 🎯 تمركز داخل المستطيل
-const textX = box.x + box.width / 2;
-const textY = box.y + box.height / 2;
+      ctx.fillText(name, textX, textY);
+    }
 
-// ✍️ رسم النص
-ctx.fillText(name, textX, textY);
-}
+    function downloadImage() {
+      const link = document.createElement("a");
+      link.download = "invitation.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
 
-function downloadImage() {
-    const link = document.createElement("a");
-    link.download = "invitation.jpg";
-    link.href = canvas.toDataURL();
-    link.click();
-}
-
-function clearName() {
-    document.getElementById("nameInput").value = "";
-    draw();
-}
-</script>
+    function clearName() {
+      document.getElementById("nameInput").value = "";
+      draw();
+    }
+  </script>
 
 </body>
 </html>
