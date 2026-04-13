@@ -108,33 +108,43 @@ function draw() {
     const name = document.getElementById("nameInput").value;
     if (!name) return;
 
-    // 📦 منطقة المستطيل (تقدر تعدلها لو احتجت)
-    const box = {
-        x: canvas.width * 0.18,
-        y: canvas.height * 0.63,
-        width: canvas.width * 0.64,
-        height: canvas.height * 0.10
-    };
+// 📦 منطقة المستطيل
+const box = {
+    x: canvas.width * 0.18,
+    y: canvas.height * 0.63,
+    width: canvas.width * 0.64,
+    height: canvas.height * 0.10
+};
 
-    const fontSize = fitText(name, box.width * 0.9);
+// 🧠 تصغير الخط تلقائي
+function fitText(text, maxWidth) {
+    let size = 80;
+    do {
+        ctx.font = size + "px Noor";
+        size--;
+    } while (ctx.measureText(text).width > maxWidth && size > 20);
+    return size;
+}
 
-    // 🎨 إعداد النص
-    ctx.fillStyle = "#9e9157";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = fontSize + "px Noor";
+const fontSize = fitText(name, box.width * 0.9);
 
-    // 🎯 تمركز داخل المستطيل
-    const textX = box.x + box.width / 2;
-    const textY = box.y + box.height / 2;
+// 🎨 إعداد النص
+ctx.fillStyle = "#9e9157";
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.font = fontSize + "px Noor";
 
-    // ✍️ رسم النص
-    ctx.fillText(name, textX, textY);
+// 🎯 تمركز داخل المستطيل
+const textX = box.x + box.width / 2;
+const textY = box.y + box.height / 2;
+
+// ✍️ رسم النص
+ctx.fillText(name, textX, textY);
 }
 
 function downloadImage() {
     const link = document.createElement("a");
-    link.download = "invitation.png";
+    link.download = "invitation.jpg";
     link.href = canvas.toDataURL();
     link.click();
 }
