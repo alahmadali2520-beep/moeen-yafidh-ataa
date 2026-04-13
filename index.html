@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دعوة إلكترونية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: #0b0b0b;
+    color: #fff;
+    text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px 0;
+    text-align: center;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.download {
+    background: #d4af37;
+    color: #000;
+    font-weight: bold;
+}
+
+.clear {
+    background: #333;
+    color: #fff;
+}
+
+canvas {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>معين يفيض عطاء</h1>
+    <p>اكتب اسمك ثم حمّل الدعوة</p>
+
+    <input type="text" id="nameInput" placeholder="اكتب اسمك هنا">
+
+    <div>
+        <button class="clear" onclick="clearName()">مسح</button>
+        <button class="download" onclick="downloadImage()">تحميل الصورة</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const img = new Image();
+img.src = "invite.jpg"; // اسم الصورة
+
+img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    draw();
+};
+
+document.getElementById("nameInput").addEventListener("input", draw);
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+
+    const name = document.getElementById("nameInput").value;
+
+    if (!name) return;
+
+    // ظل خفيف
+    ctx.shadowColor = "rgba(0,0,0,0.7)";
+    ctx.shadowBlur = 12;
+
+    // لون النص (ذهبي)
+    ctx.fillStyle = "#d4af37";
+
+    // الخط
+    ctx.font = "bold 70px Cairo";
+    ctx.textAlign = "center";
+
+    // موقع الاسم (أسفل الصورة)
+    ctx.fillText(name, canvas.width / 2, canvas.height - 100);
+}
+
+function downloadImage() {
+    const link = document.createElement("a");
+    link.download = "invitation.png";
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+function clearName() {
+    document.getElementById("nameInput").value = "";
+    draw();
+}
+</script>
+
+</body>
+</html>
