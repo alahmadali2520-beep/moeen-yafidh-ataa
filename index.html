@@ -11,6 +11,10 @@
       src: url('Noor.ttf');
     }
 
+    :root {
+      --main-color: #9e9157;
+    }
+
     body {
       margin: 0;
       font-family: 'Noor', sans-serif;
@@ -25,7 +29,7 @@
     }
 
     h2 {
-      color: #9e9157;
+      color: var(--main-color);
       margin-bottom: 10px;
     }
 
@@ -50,7 +54,7 @@
     }
 
     .download {
-      background: #9e9157;
+      background: var(--main-color);
       color: #fff;
     }
 
@@ -67,6 +71,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -87,36 +92,50 @@
     const ctx = canvas.getContext("2d");
 
     const params = new URLSearchParams(window.location.search);
-    const type = params.get("type") || "main";
+    const type = params.get("type") || "almazrouei-office";
 
-    let config = {
-      image: "invite-main.jpg",
-      title: "دعوة لحفل معين",
-      box: { x: 0.18, y: 0.37, width: 0.64, height: 0.07 }
-    };
+    let config = {};
 
-    if (type === "women-health-graduates") {
+    if (type === "almazrouei-office") {
       config = {
-        image: "invite-women.jpg",
-        title: "دعوة خريجات الكادر الصحي للنساء",
-        box: { x: 0.20, y: 0.37, width: 0.60, height: 0.08 }
+        image: "almazrouei-office.jpg",
+        title: "مكتب المزروعية",
+        color: "#9e9157",
+        box: { x: 0.18, y: 0.48, width: 0.64, height: 0.06 }
       };
-    } else if (type === "men-health-graduates") {
+    } else if (type === "mohammed-emad") {
       config = {
-        image: "invite-men-graduates.jpg",
-        title: "دعوة خريجي الكادر الصحي رجال",
-        box: { x: 0.18, y: 0.37, width: 0.64, height: 0.07 }
+        image: "mohammed-emad.jpg",
+        title: "محمد عماد",
+        color: "#5f8a8b",
+        box: { x: 0.18, y: 0.48, width: 0.64, height: 0.06 }
       };
-    } else if (type === "men-health-retirees") {
+    } else if (type === "yashfeen-medical") {
       config = {
-        image: "invite-men-retirees.jpg",
-        title: "دعوة متقاعدي الكادر الصحي رجال",
-        box: { x: 0.18, y: 0.37, width: 0.64, height: 0.07 }
+        image: "yashfeen-medical.jpg",
+        title: "شركة يشفين الطبية",
+        color: "#b88a8a",
+        box: { x: 0.20, y: 0.52, width: 0.60, height: 0.07 }
+      };
+    } else if (type === "perfect-life") {
+      config = {
+        image: "perfect-life.jpg",
+        title: "بيرفكت لايف",
+        color: "#8b7d5f",
+        box: { x: 0.18, y: 0.48, width: 0.64, height: 0.06 }
+      };
+    } else {
+      config = {
+        image: "almazrouei-office.jpg",
+        title: "مكتب المزروعية",
+        color: "#9e9157",
+        box: { x: 0.18, y: 0.48, width: 0.64, height: 0.06 }
       };
     }
 
     document.getElementById("title").innerText = config.title;
     document.title = config.title;
+    document.documentElement.style.setProperty("--main-color", config.color);
 
     const img = new Image();
     img.src = config.image;
@@ -154,7 +173,7 @@
 
       const fontSize = fitText(name, box.width * 0.9);
 
-      ctx.fillStyle = "#9e9157";
+      ctx.fillStyle = config.color;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.font = fontSize + "px Noor";
